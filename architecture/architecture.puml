@@ -1,0 +1,51 @@
+@startuml
+left to right direction
+skinparam componentStyle rectangle
+
+title Variant 13 — Secure Electronic Ticket Registry
+
+actor "Passenger / User" as User
+actor "Operator" as Operator
+actor "Auditor" as Auditor
+actor "Administrator" as Admin
+
+rectangle "Application layer" {
+  component "Web / Mobile dApp" as DApp
+  component "Wallet / MetaMask" as Wallet
+}
+
+rectangle "Ethereum / Sepolia" {
+  component "RPC / Ethereum node" as RPC
+  component "TicketSecurityRegistry\n(Solidity)" as Contract
+  component "Event logs" as Logs
+}
+
+database "Protected off-chain storage\n(ticket document / personal data)" as Offchain
+component "Monitoring / Block Explorer" as Monitor
+
+User --> DApp : check ticket status
+Operator --> DApp : register / validate / revoke
+Auditor --> DApp : audit
+Admin --> DApp : manage roles
+DApp --> Wallet : request signature for WRITE
+Wallet --> RPC : signed transaction
+DApp --> RPC : eth_call for READ
+RPC --> Contract : execute EVM call
+Contract --> Logs : TicketRegistered / StatusChanged
+DApp --> Offchain : store sensitive record
+DApp --> Contract : store only dataHash + minimal metadata
+Monitor --> RPC : read blocks / receipts / logs
+Auditor --> Monitor : independent verification
+
+note bottom of Offchain
+Sensitive / personal data stays off-chain.
+Only a cryptographic hash is committed on-chain.
+end note
+
+note bottom of Contract
+OPERATOR_ROLE changes ticket state.
+AUDITOR_ROLE accesses audit function.
+DEFAULT_ADMIN_ROLE manages roles.
+Revoked is a terminal state.
+end note
+@enduml

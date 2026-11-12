@@ -1,0 +1,205 @@
+{
+  "success": true,
+  "error": null,
+  "results": {
+    "detectors": [
+      {
+        "elements": [
+          {
+            "type": "function",
+            "name": "attack",
+            "source_mapping": {
+              "start": 532,
+              "length": 192,
+              "filename_relative": "contracts/attack/TxOriginPhishingAttacker.sol",
+              "filename_absolute": "C:/Users/kadir/Documents/Q/projects/blockchain_pr3/contracts/attack/TxOriginPhishingAttacker.sol",
+              "filename_short": "contracts/attack/TxOriginPhishingAttacker.sol",
+              "is_dependency": false,
+              "lines": [
+                14,
+                15,
+                16,
+                17
+              ],
+              "starting_column": 5,
+              "ending_column": 6
+            },
+            "type_specific_fields": {
+              "parent": {
+                "type": "contract",
+                "name": "TxOriginPhishingAttacker",
+                "source_mapping": {
+                  "start": 390,
+                  "length": 336,
+                  "filename_relative": "contracts/attack/TxOriginPhishingAttacker.sol",
+                  "filename_absolute": "C:/Users/kadir/Documents/Q/projects/blockchain_pr3/contracts/attack/TxOriginPhishingAttacker.sol",
+                  "filename_short": "contracts/attack/TxOriginPhishingAttacker.sol",
+                  "is_dependency": false,
+                  "lines": [
+                    11,
+                    12,
+                    13,
+                    14,
+                    15,
+                    16,
+                    17,
+                    18
+                  ],
+                  "starting_column": 1,
+                  "ending_column": 2
+                }
+              },
+              "signature": "attack(address,uint256)"
+            }
+          },
+          {
+            "type": "node",
+            "name": "IVulnerableTicketRegistry(victim).revokeTicket(ticketId)",
+            "source_mapping": {
+              "start": 601,
+              "length": 56,
+              "filename_relative": "contracts/attack/TxOriginPhishingAttacker.sol",
+              "filename_absolute": "C:/Users/kadir/Documents/Q/projects/blockchain_pr3/contracts/attack/TxOriginPhishingAttacker.sol",
+              "filename_short": "contracts/attack/TxOriginPhishingAttacker.sol",
+              "is_dependency": false,
+              "lines": [
+                15
+              ],
+              "starting_column": 9,
+              "ending_column": 65
+            },
+            "type_specific_fields": {
+              "parent": {
+                "type": "function",
+                "name": "attack",
+                "source_mapping": {
+                  "start": 532,
+                  "length": 192,
+                  "filename_relative": "contracts/attack/TxOriginPhishingAttacker.sol",
+                  "filename_absolute": "C:/Users/kadir/Documents/Q/projects/blockchain_pr3/contracts/attack/TxOriginPhishingAttacker.sol",
+                  "filename_short": "contracts/attack/TxOriginPhishingAttacker.sol",
+                  "is_dependency": false,
+                  "lines": [
+                    14,
+                    15,
+                    16,
+                    17
+                  ],
+                  "starting_column": 5,
+                  "ending_column": 6
+                },
+                "type_specific_fields": {
+                  "parent": {
+                    "type": "contract",
+                    "name": "TxOriginPhishingAttacker",
+                    "source_mapping": {
+                      "start": 390,
+                      "length": 336,
+                      "filename_relative": "contracts/attack/TxOriginPhishingAttacker.sol",
+                      "filename_absolute": "C:/Users/kadir/Documents/Q/projects/blockchain_pr3/contracts/attack/TxOriginPhishingAttacker.sol",
+                      "filename_short": "contracts/attack/TxOriginPhishingAttacker.sol",
+                      "is_dependency": false,
+                      "lines": [
+                        11,
+                        12,
+                        13,
+                        14,
+                        15,
+                        16,
+                        17,
+                        18
+                      ],
+                      "starting_column": 1,
+                      "ending_column": 2
+                    }
+                  },
+                  "signature": "attack(address,uint256)"
+                }
+              }
+            },
+            "additional_fields": {
+              "underlying_type": "external_calls"
+            }
+          },
+          {
+            "type": "node",
+            "name": "AttackForwarded(victim,ticketId,msg.sender)",
+            "source_mapping": {
+              "start": 667,
+              "length": 50,
+              "filename_relative": "contracts/attack/TxOriginPhishingAttacker.sol",
+              "filename_absolute": "C:/Users/kadir/Documents/Q/projects/blockchain_pr3/contracts/attack/TxOriginPhishingAttacker.sol",
+              "filename_short": "contracts/attack/TxOriginPhishingAttacker.sol",
+              "is_dependency": false,
+              "lines": [
+                16
+              ],
+              "starting_column": 9,
+              "ending_column": 59
+            },
+            "type_specific_fields": {
+              "parent": {
+                "type": "function",
+                "name": "attack",
+                "source_mapping": {
+                  "start": 532,
+                  "length": 192,
+                  "filename_relative": "contracts/attack/TxOriginPhishingAttacker.sol",
+                  "filename_absolute": "C:/Users/kadir/Documents/Q/projects/blockchain_pr3/contracts/attack/TxOriginPhishingAttacker.sol",
+                  "filename_short": "contracts/attack/TxOriginPhishingAttacker.sol",
+                  "is_dependency": false,
+                  "lines": [
+                    14,
+                    15,
+                    16,
+                    17
+                  ],
+                  "starting_column": 5,
+                  "ending_column": 6
+                },
+                "type_specific_fields": {
+                  "parent": {
+                    "type": "contract",
+                    "name": "TxOriginPhishingAttacker",
+                    "source_mapping": {
+                      "start": 390,
+                      "length": 336,
+                      "filename_relative": "contracts/attack/TxOriginPhishingAttacker.sol",
+                      "filename_absolute": "C:/Users/kadir/Documents/Q/projects/blockchain_pr3/contracts/attack/TxOriginPhishingAttacker.sol",
+                      "filename_short": "contracts/attack/TxOriginPhishingAttacker.sol",
+                      "is_dependency": false,
+                      "lines": [
+                        11,
+                        12,
+                        13,
+                        14,
+                        15,
+                        16,
+                        17,
+                        18
+                      ],
+                      "starting_column": 1,
+                      "ending_column": 2
+                    }
+                  },
+                  "signature": "attack(address,uint256)"
+                }
+              }
+            },
+            "additional_fields": {
+              "underlying_type": "event"
+            }
+          }
+        ],
+        "description": "Reentrancy in TxOriginPhishingAttacker.attack(address,uint256) (contracts/attack/TxOriginPhishingAttacker.sol#14-17):\n\tExternal calls:\n\t- IVulnerableTicketRegistry(victim).revokeTicket(ticketId) (contracts/attack/TxOriginPhishingAttacker.sol#15)\n\tEvent emitted after the call(s):\n\t- AttackForwarded(victim,ticketId,msg.sender) (contracts/attack/TxOriginPhishingAttacker.sol#16)\n",
+        "markdown": "Reentrancy in [TxOriginPhishingAttacker.attack(address,uint256)](contracts/attack/TxOriginPhishingAttacker.sol#L14-L17):\n\tExternal calls:\n\t- [IVulnerableTicketRegistry(victim).revokeTicket(ticketId)](contracts/attack/TxOriginPhishingAttacker.sol#L15)\n\tEvent emitted after the call(s):\n\t- [AttackForwarded(victim,ticketId,msg.sender)](contracts/attack/TxOriginPhishingAttacker.sol#L16)\n",
+        "first_markdown_element": "contracts/attack/TxOriginPhishingAttacker.sol#L14-L17",
+        "id": "f30a1fd59f7464dba1913b30cfeb50dc16420a791434d04b8ce0a6334356db62",
+        "check": "reentrancy-events",
+        "impact": "Low",
+        "confidence": "Medium",
+        "reference": "https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-4"
+      }
+    ]
+  }
+}
