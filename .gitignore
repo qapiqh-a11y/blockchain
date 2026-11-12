@@ -11,3 +11,5 @@ web3-client/dist/
 reports/*.log
 reports/ci-*
 
+
+/blockchain/
