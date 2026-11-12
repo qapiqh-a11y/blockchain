@@ -1,0 +1,13 @@
+node_modules/
+artifacts/
+cache/
+.env
+.env.*
+coverage/
+tmp/
+web3-client/dist/
+
+# Evidence files are intentionally kept, but never store secrets in them.
+reports/*.log
+reports/ci-*
+

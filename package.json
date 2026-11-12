@@ -1,0 +1,21 @@
+{
+  "name": "blockchain-pr3-variant13",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "compile": "hardhat compile --force",
+    "test": "hardhat test solidity",
+    "test:all": "hardhat test",
+    "node": "hardhat node",
+    "demo:local": "node scripts/deploy-and-demo.mjs --network local",
+    "demo:exploit": "node scripts/exploit-demo.mjs",
+    "demo:sepolia": "node scripts/deploy-and-demo.mjs --network sepolia",
+    "clean": "hardhat clean"
+  },
+  "devDependencies": {
+    "@openzeppelin/contracts": "^5.0.0",
+    "ethers": "^6.17.0",
+    "hardhat": "^3.0.0"
+  }
+}

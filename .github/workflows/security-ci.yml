@@ -1,0 +1,170 @@
+name: Security CI
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+    branches: ["main", "master"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality-and-tests:
+    name: Quality and 27 tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            web3-client/package-lock.json
+
+      - name: Install contract dependencies
+        run: npm ci
+
+      - name: Install dashboard dependencies
+        working-directory: web3-client
+        run: npm ci
+
+      - name: Prepare reports directory
+        run: mkdir -p reports
+
+      - name: Compile Solidity contracts
+        run: npm run compile
+
+      - name: Run 12 Solidity tests
+        run: npm test | tee reports/ci-solidity-tests.txt
+
+      - name: Start local Hardhat RPC
+        run: |
+          npx hardhat node > reports/ci-hardhat-node.log 2>&1 &
+          echo $! > reports/ci-hardhat-node.pid
+          node scripts/wait-for-rpc.mjs
+
+      - name: Run 10 integration and property tests
+        run: node --test scripts/pr5-integration-tests.mjs | tee reports/ci-integration-tests.txt
+
+      - name: Run 5 monitoring tests
+        working-directory: web3-client
+        run: npm run test:monitoring | tee ../reports/ci-monitoring-tests.txt
+
+      - name: Lint dashboard
+        working-directory: web3-client
+        run: npm run lint
+
+      - name: Build dashboard
+        working-directory: web3-client
+        run: npm run build
+
+      - name: Upload test evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: quality-test-evidence
+          path: |
+            reports/ci-*.txt
+            reports/ci-hardhat-node.log
+            web3-client/dist
+          if-no-files-found: warn
+          retention-days: 14
+
+  security-analysis:
+    name: npm audit and Slither
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            web3-client/package-lock.json
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm ci --prefix web3-client
+          python -m pip install --disable-pip-version-check slither-analyzer==0.11.6
+          solc-select install 0.8.28
+          solc-select use 0.8.28
+          mkdir -p reports
+
+      - name: Record contract dependency audit
+        run: npm audit --json > reports/ci-npm-audit-contracts.json || true
+
+      - name: Gate contract dependencies at critical severity
+        run: npm audit --audit-level=critical
+
+      - name: Gate dashboard dependencies at high severity
+        working-directory: web3-client
+        run: |
+          npm audit --json > ../reports/ci-npm-audit-dashboard.json || true
+          npm audit --audit-level=high
+
+      - name: Slither gate for protected contract
+        run: |
+          slither contracts/TicketSecurityRegistry.sol \
+            --solc-remaps "@openzeppelin/=node_modules/@openzeppelin/" \
+            --exclude-dependencies \
+            --fail-high \
+            --json reports/ci-slither-secure.json
+
+      - name: Record expected tx.origin finding
+        run: |
+          set +e
+          slither contracts/vulnerable/VulnerableTicketRegistry.sol \
+            --json reports/ci-slither-vulnerable.json
+          result=$?
+          set -e
+          test -s reports/ci-slither-vulnerable.json
+          echo "Intentional vulnerable-contract analysis exit code: $result"
+
+      - name: Record attacker-contract findings
+        run: |
+          set +e
+          slither contracts/attack/TxOriginPhishingAttacker.sol \
+            --json reports/ci-slither-attacker.json
+          result=$?
+          set -e
+          test -s reports/ci-slither-attacker.json
+          echo "Attacker-contract analysis exit code: $result"
+
+      - name: Upload security evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: security-analysis-evidence
+          path: |
+            reports/ci-npm-audit-*.json
+            reports/ci-slither-*.json
+          if-no-files-found: warn
+          retention-days: 14
